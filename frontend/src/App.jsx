@@ -9,7 +9,7 @@ function App() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/data")
+      .get("/api/data")
       .then((response) => {
         setData(response.data.users);
       })
@@ -19,7 +19,7 @@ function App() {
   }, []);
 
   const createNewUser = () => {
-    axios.post("http://localhost:4000/create-test-user").then(() => {
+    axios.post("/api/create-test-user").then(() => {
       setData((old) => [
         ...old,
         {

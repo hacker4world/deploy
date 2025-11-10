@@ -9,7 +9,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get("/data", async (req, res) => {
+app.get("/api/data", async (req, res) => {
   connection.execute("SELECT * FROM users", (err, result) => {
     res.json({
       users: result,
@@ -17,7 +17,7 @@ app.get("/data", async (req, res) => {
   });
 });
 
-app.post("/create-test-user", (req, res) => {
+app.post("/api/create-test-user", (req, res) => {
   connection.query('INSERT INTO users (name, age) VALUES ("test", 25)');
   res.send("user created");
 });
