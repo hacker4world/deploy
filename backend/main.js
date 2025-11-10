@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const connection = require("./database/connection");
 
 const app = express();
 
@@ -8,29 +9,23 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get("/data", (req, res) => {
-  res.json({
-    data: [
-      {
-        id: 0,
-        name: "James",
-      },
-      {
-        id: 1,
-        name: "John",
-      },
-    ],
+app.get("/data", async (req, res) => {
+  connection.execute("SELECT * FROM users", (err, result) => {
+    res.json({
+      users: result,
+    });
   });
 });
 
-app.get("/crash", (req, res) => {
-  let object = {
-    name: "aline",
-  };
-
-  res.send(object.person.name);
+app.post("/create-test-user", (req, res) => {
+  connection.query('INSERT INTO users (name, age) VALUES ("test", 25)');
+  res.send("user created");
 });
 
-app.listen(4000, "0.0.0.0", () => {
-  console.log("Server has started");
+connection.connect(() => {
+  console.log("Database connected");
+
+  app.listen(4000, () => {
+    console.log("Server has started");
+  });
 });
